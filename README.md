@@ -1,316 +1,110 @@
-# 🌐 Agent Network Visualizer v3.1
+# Agent Network Visualizer v3.1
 
-<div align="center">
+## About the Project
 
-![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![React](https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react)
-![Status](https://img.shields.io/badge/status-stable-success.svg)
+**Agent Network Visualizer v3.1** is a powerful tool for simulating and visualizing social networks of agents with an integrated economic system, clan mechanics, and conflict resolution. The project enables researchers and developers to explore the dynamics of connection formation, opinion propagation, economic interaction, and inter-group conflicts in agent-based systems.
 
-**Расширенная версия с визуализацией мнений, детализированной аналитикой и полнофункциональной экономической моделью**
+## Features
 
-[Демо](#-демо) • [Установка](#-установка) • [Документация](#-документация) • [Новое в v3.1](#-новое-в-v31)
+- **Multi-Agent Simulation:** Model complex networks of autonomous agents with individual behaviors and attributes.
+- **Economic Engine:** A fully functional economic model with resource distribution, transactions, and market dynamics.
+- **Clan System:** Agents can form clans, alliances, and factions with dedicated clan statistics and management.
+- **Conflict Mechanics:** Simulate inter-agent and inter-clan conflicts with realistic resolution outcomes.
+- **Opinion Visualization:** Track and visualize how opinions spread and evolve across the network.
+- **Enhanced Analytics:** Detailed dashboards with real-time statistics, charts, and event logs.
+- **Export Utilities:** Export simulation data and results for further analysis (CSV, JSON, Markdown, PNG).
+- **Responsive UI:** Built with shadcn/ui and TailwindCSS for a modern, responsive interface.
 
-</div>
+## What is New in v3.1
 
----
+- Fully reworked economic model with improved balance and realistic resource distribution.
+- Enhanced clan system with inter-clan conflict mechanics and 3 distribution rule types.
+- New death mechanics for agents with configurable survival thresholds.
+- Comprehensive test suite covering economic, death, and integration scenarios.
+- Detailed documentation: balance recommendations, math audit, and final test results.
 
-## 📖 О проекте
+## Tech Stack
 
-**Agent Network Visualizer v3.1** — это мощный инструмент для моделирования и визуализации социальных сетей агентов с экономической системой, клановой механикой и конфликтами. Проект позволяет исследовать динамику формирования связей, распространения мнений, экономического взаимодействия и межгрупповых конфликтов в агентных системах.
+| Category | Technologies |
+|:---------|:-------------|
+| **Frontend** | React 18, JavaScript (JSX), Vite |
+| **Styling** | TailwindCSS, shadcn/ui, Radix UI |
+| **Visualization** | Three.js (3D graph), Recharts (charts) |
+| **Simulation Engine** | Custom JS modules (agentSimulation, economicEngine, clanSystem, conflictMechanics) |
+| **Build Tool** | Vite |
 
-### ✨ Ключевые особенности
+## Installation and Setup
 
-- 🎨 **Интерактивная 3D-визуализация** с использованием Three.js
-- 🧠 **Моделирование агентов** на основе векторов ценностей и интересов
-- 💰 **Экономическая система** с производством, потреблением и выживанием
-- 👥 **Клановая механика** с автоматическим обнаружением и правилами распределения
-- ⚔️ **Система конфликтов** с кражей ресурсов и поляризацией связей
-- 📊 **Детальная аналитика** с графиками и статистикой
-- 🤖 **AI-анализ** результатов симуляции
-- 📁 **Экспорт данных** в CSV, JSON, Markdown
-
----
-
-## 🆕 Новое в v3.1
-
-### 💰 Экономическая модель
-
-Полностью функциональная экономическая система с балансом производства и потребления:
-
-- **Производство ресурсов** зависит от социальных связей агента
-- **Потребление** требует минимальных ресурсов для выживания
-- **Механика выживания** — агенты без ресурсов погибают
-- **Бонусы от связей** — сильные социальные связи увеличивают производительность
-
-```javascript
-// Формула производства
-production = baseProductivity × (1 + strongConnections × connectionBonus)
-
-// Условие выживания
-if (resources < minSurvival) {
-    agent.alive = false
-}
-```
-
-### 👥 Система кланов
-
-Автоматическое обнаружение кланов по плотности связей с 3 основными правилами распределения ресурсов:
-
-| Правило | Описание | Подправила |
-|---------|----------|------------|
-| **Диктатура** | Сильнейший забирает все излишки | - |
-| **Демократия** | Распределение с подправилами | • Первому половина (1/2)<br>• Первому треть (1/3)<br>• Первому четверть (1/4)<br>• Первому пятую часть (1/5)<br>• Всем поровну |
-| **Беспредел** | Атака на слабый клан | - |
-
-#### Демократические подправила
-
-При выборе демократии клан дополнительно выбирает одно из 5 подправил:
-
-- **Первому половина** - сильнейший агент получает 50% излишков, из оставшихся 50% следующий по силе получает свою половину, и так далее рекурсивно
-- **Первому треть** - сильнейший получает 33%, остальным рекурсивно
-- **Первому четверть** - сильнейший получает 25%, остальным рекурсивно
-- **Первому пятую часть** - сильнейший получает 20%, остальным рекурсивно
-- **Всем поровну** - равное распределение между всеми членами клана
-
-### ⚔️ Конфликтная механика
-
-Реалистичные конфликты между кланами:
-
-- **Кража ресурсов** — до 50% излишков жертвы
-- **Поляризация связей** — ослабление межклановых связей
-- **Выживание жертв** — жертвам оставляется минимум для выживания
-- **Статистика конфликтов** — отслеживание агрессоров и жертв
-
----
-
-## 🎯 Основные возможности
-
-### 1. Настройка симуляции
-
-- **Количество агентов** (10-1000)
-- **Циклы симуляции** (10-200)
-- **Размерность вектора** (5-20)
-- **Количество кластеров** (2-10)
-- **Экономические параметры** (производство, потребление, выживание)
-- **Параметры кланов** (размер, плотность, конфликты)
-
-### 2. Визуализация
-
-- **3D-граф связей** с интерактивным управлением
-- **Цветовая кодировка** по кластерам
-- **Размер узлов** пропорционален количеству связей
-- **Толщина связей** отражает их силу
-- **Анимация** формирования связей
-
-### 3. Аналитика
-
-- **Общая сводка** — базовая статистика сети
-- **Детализация по связям** — анализ связей между агентами
-- **Детализация по мнениям** — распределение мнений по темам
-- **Экономическая статистика** — ресурсы, выживаемость, производство
-- **Статистика кланов** — размер, сила, плотность, правила
-- **Статистика конфликтов** — количество, украденные ресурсы, агрессоры
-
-### 4. Экспорт
-
-- **CSV** — матрица связей для анализа в Excel/Python
-- **JSON** — полные данные симуляции
-- **Markdown** — отчет с результатами
-- **PNG** — снимок визуализации
-
----
-
-## 🚀 Установка
-
-### Требования
+### Requirements
 
 - Node.js >= 16.0.0
-- npm >= 8.0.0
+- npm >= 8.0.0 (or pnpm)
 
-### Быстрый старт
+### Quick Start
 
 ```bash
-# Клонировать репозиторий
-git clone https://github.com/LeyaVibe/agent-network-visualizer-v3.1.git
+git clone https://github.com/makimyys-afk/agent-network-visualizer-v3.1.git
 cd agent-network-visualizer-v3.1
-
-# Установить зависимости
 npm install
-
-# Запустить dev-сервер
 npm run dev
-
-# Открыть в браузере
-# http://localhost:5173
 ```
 
-### Сборка для продакшн
+Open in browser: http://localhost:5173
+
+### Production Build
 
 ```bash
-# Создать production build
 npm run build
-
-# Предпросмотр build
 npm run preview
 ```
 
----
-
-## 📚 Документация
-
-### Основная документация
-
-- **[Руководство пользователя](docs/ECONOMIC_USER_GUIDE.md)** — как использовать экономическую модель
-- **[Техническая документация](docs/ECONOMIC_MODEL_IMPLEMENTATION.md)** — архитектура и API
-- **[Рекомендации по балансу](docs/BALANCE_RECOMMENDATIONS.md)** — настройка параметров экономики
-- **[Математический аудит](docs/math-audit.md)** — проверка всех формул
-
-### Отчеты о тестировании
-
-- **[Финальные результаты тестирования](docs/FINAL_TEST_RESULTS.md)** — полное тестирование всех систем
-- **[Отчет об исправлениях](docs/MATH_FIXES_REPORT.md)** — исправленные математические проблемы
-
-### Архитектура проекта
+## Project Structure
 
 ```
 agent-network-visualizer-v3.1/
 ├── src/
-│   ├── components/          # React компоненты
-│   │   ├── EconomicPanel.jsx      # Панель экономических настроек
-│   │   ├── ClanPanel.jsx          # Панель управления кланами
-│   │   └── ...
-│   ├── lib/                 # Библиотеки симуляции
-│   │   ├── economicEngine.js      # Экономический движок
-│   │   ├── clanSystem.js          # Система кланов
-│   │   ├── conflictMechanics.js   # Конфликтная механика
-│   │   ├── enhancedSimulation.js  # Расширенная симуляция
-│   │   └── agentSimulation.js     # Базовая симуляция
-│   ├── App.jsx              # Главный компонент
-│   └── main.jsx             # Точка входа
-├── docs/                    # Документация
-├── public/                  # Статические файлы
+│   ├── App.jsx
+│   ├── components/
+│   ├── lib/
+│   │   ├── agentSimulation.js
+│   │   ├── economicEngine.js
+│   │   ├── clanSystem.js
+│   │   ├── conflictMechanics.js
+│   │   ├── eventLogger.js
+│   │   └── exportUtils.js
+│   └── hooks/
+├── docs/
+├── public/
 └── package.json
 ```
 
----
+## Usage
 
-## 🎮 Использование
+1. Open the **Settings** tab and configure simulation parameters.
+2. Optionally enable the **Economic Model** in the Economy tab.
+3. Optionally configure **Clan and Conflict** settings in the Clans tab.
+4. Click **Run Simulation** and review results in the Results, Economy, and Clans tabs.
 
-### 1. Базовая симуляция
+## Economic Model
 
-1. Откройте вкладку **"Настройки"**
-2. Настройте параметры (агенты, циклы, векторы)
-3. Нажмите **"Запустить симуляцию"**
-4. Просмотрите результаты на вкладке **"Результаты"**
+The economic engine models resource production and consumption per agent. Clan resource distribution supports three rule types: **Dictatorship** (strongest takes all surplus), **Democracy** (configurable sub-rules), and **Anarchy** (attack the weakest clan).
 
-### 2. Симуляция с экономикой
+## Performance
 
-1. Откройте вкладку **"Экономика"**
-2. Включите переключатель **"Включить экономическую модель"**
-3. Настройте параметры:
-   - Базовая продуктивность: 10
-   - Минимум для выживания: 10
-   - Максимальный множитель: 2.0x
-4. Запустите симуляцию
-5. Проверьте экономическую статистику на вкладке **"Экономика"**
+| Configuration | Estimated Time |
+|:-------------|:--------------|
+| 150 agents x 50 cycles | ~0.1 seconds |
+| 500 agents x 100 cycles | ~0.5 seconds |
+| 1000 agents x 200 cycles | ~2 seconds |
 
-### 3. Симуляция с кланами и конфликтами
+## Documentation
 
-1. Откройте вкладку **"Кланы"**
-2. Настройте параметры:
-   - Минимальный размер клана: 3
-   - Порог плотности связей: 0.50
-   - Фактор поляризации: ×3
-   - Доля кражи накоплений: 67%
-3. Запустите симуляцию
-4. Проверьте статистику кланов и конфликтов на вкладке **"Кланы"**
+- CHANGELOG.md - Version history.
+- ECONOMIC_MODEL_IMPLEMENTATION.md - Technical details of the economic model.
+- ECONOMIC_USER_GUIDE.md - User guide for the economic system.
+- docs/BALANCE_RECOMMENDATIONS.md - Balance tuning recommendations.
+- docs/FINAL_TEST_RESULTS.md - Final test results summary.
 
----
+## License
 
-## 📊 Примеры сценариев
-
-### Сценарий 1: Стабильная экономика
-
-**Цель:** Все агенты выживают благодаря сильным связям
-
-**Параметры:**
-- Агентов: 150
-- Циклов: 50
-- Базовая продуктивность: 10
-- Минимум для выживания: 10
-
-**Ожидаемый результат:**
-- Выживаемость: 100%
-- Средние ресурсы: 200-300
-- Конфликты: 5-10
-
-### Сценарий 2: Жесткая экономика
-
-**Цель:** Выживают только социально активные агенты
-
-**Параметры:**
-- Агентов: 150
-- Циклов: 50
-- Базовая продуктивность: 8
-- Минимум для выживания: 11
-
-**Ожидаемый результат:**
-- Выживаемость: 60-80%
-- Изолированные агенты погибают
-- Социальные связи критически важны
-
-### Сценарий 3: Клановые войны
-
-**Цель:** Максимум конфликтов между кланами
-
-**Параметры:**
-- Агентов: 200
-- Циклов: 100
-- Фактор поляризации: ×5
-- Доля кражи: 80%
-
-**Ожидаемый результат:**
-- Конфликты: 20-40
-- Высокая поляризация сети
-- Большие перераспределения ресурсов
-
----
-
-## 🔬 Научное применение
-
-Этот инструмент может быть использован для исследования:
-
-- **Социальной динамики** — формирование связей и групп
-- **Экономических систем** — распределение ресурсов и неравенство
-- **Конфликтов** — причины и последствия межгрупповых конфликтов
-- **Выживания** — влияние социальных связей на выживаемость
-- **Поляризации** — механизмы разделения общества
-
----
-
-## 🛠️ Технологии
-
-- **React 18.2** — UI фреймворк
-- **Three.js** — 3D визуализация
-- **Recharts** — графики и диаграммы
-- **Vite** — сборщик и dev-сервер
-- **Tailwind CSS** — стилизация
-
----
-
-## 📈 Производительность
-
-- **150 агентов × 50 циклов** — ~0.1 секунды
-- **500 агентов × 100 циклов** — ~0.5 секунды
-- **1000 агентов × 200 циклов** — ~2 секунды
-
-Оптимизировано для работы с большими сетями без потери производительности.
-
----
-
-<div align="center">
-
-Made with ❤️ by [LeyaVibe](https://github.com/LeyaVibe)
-
-</div>
+This project is licensed under the MIT License.

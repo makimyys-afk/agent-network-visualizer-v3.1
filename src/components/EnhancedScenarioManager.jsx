@@ -254,14 +254,31 @@ const EnhancedScenarioManager = ({
     reader.onload = (e) => {
       try {
         const importData = JSON.parse(e.target.result);
+        // Security: strip any executable `customLogic` from imported files.
+        // Scenario JSON is untrusted input, and `customLogic` is passed to
+        // `new Function(...)` in `agentSimulation.js` -> arbitrary JS exec
+        // in the user's browser (see generateTopics). Users who need custom
+        // logic can paste it into the textarea themselves after import.
+        const sanitizedScenario = { ...(importData.scenario || {}) };
+        const hadCustomLogic = Boolean(sanitizedScenario.customLogic);
+        delete sanitizedScenario.customLogic;
+
         const importedScenario = {
-          ...importData.scenario,
+          ...sanitizedScenario,
           id: `imported_${Date.now()}`,
           isCustom: true
         };
 
         setScenarios(prev => [...prev, importedScenario]);
         setCurrentScenario(importedScenario);
+
+        if (hadCustomLogic && onError) {
+          onError(
+            'Импортированный сценарий содержал поле customLogic — оно удалено ' +
+            'из соображений безопасности (произвольное выполнение JavaScript). ' +
+            'При необходимости добавьте логику вручную в редакторе.'
+          );
+        }
 
         if (importData.topicSettings) {
           setTopicSettings(importData.topicSettings);
@@ -792,6 +809,13 @@ const EnhancedScenarioManager = ({
 
                 <div>
                   <Label>Пользовательская логика (JavaScript)</Label>
+                  <div className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-md p-2 my-1">
+                    <strong>Внимание:</strong> этот код выполняется в вашем
+                    браузере через <code>new Function</code>. Вставляйте только
+                    код, которому доверяете — он получает доступ к DOM, cookie,
+                    <code> localStorage</code> (включая сохранённые API-ключи)
+                    и может отправлять запросы от вашего имени.
+                  </div>
                   <Textarea
                     value={editingScenario.customLogic || ''}
                     onChange={(e) => setEditingScenario({

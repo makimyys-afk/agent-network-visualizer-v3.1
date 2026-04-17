@@ -131,6 +131,13 @@ const ScenarioManager = ({
             {editingScenario.type === 'custom' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Пользовательская логика (JavaScript)</label>
+                <div className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-md p-2 mb-2">
+                  <strong>Внимание:</strong> этот код выполняется в вашем
+                  браузере через <code>new Function</code>. Вставляйте только
+                  код, которому доверяете — он получает доступ к DOM, cookie,
+                  localStorage (включая сохранённые API-ключи) и может
+                  отправлять запросы от вашего имени.
+                </div>
                 <textarea
                   value={editingScenario.customLogic}
                   onChange={(e) => setEditingScenario({ ...editingScenario, customLogic: e.target.value })}

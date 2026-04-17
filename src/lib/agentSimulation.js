@@ -153,7 +153,15 @@ export function generateTopics(dimension, scenario, clusterCenters = [], initial
 
   // Если есть пользовательский сценарий
   if (customScenario && customScenario.customLogic) {
-    try {
+    // Security: `customLogic` is executed via `new Function(...)`, which is
+    // equivalent to eval. It MUST only come from code the user typed into the
+    // editor themselves — never from an imported/untrusted scenario JSON.
+    // `EnhancedScenarioManager.importScenario` strips this field on import;
+    // keep the warning here as defence-in-depth in case another caller adds
+    // a new import path in the future.
+    if (typeof customScenario.customLogic !== 'string') {
+      console.warn('Ignoring non-string customLogic in customScenario');
+    } else try {
       // Выполняем пользовательский код
       const customFunction = new Function('agents', 'clusterCenters', 'vectorDimension', 'numClusters', 'recalculateClustersAfter', customScenario.customLogic);
       const customTopics = customFunction(agents, clusterCenters, dimension, numClusters, recalculateClustersAfter);

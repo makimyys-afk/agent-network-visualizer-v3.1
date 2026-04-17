@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      Security: Content Security Policy restricts which resources can be
+      loaded. `'unsafe-inline'` is required by Tailwind / shadcn chart styles
+      (ChartStyle writes CSS via dangerouslySetInnerHTML) and `'unsafe-eval'`
+      is required by the Custom Scenario feature which compiles user-typed
+      logic via `new Function(...)`. `connect-src` is limited to the
+      OpenRouter AI endpoint actually used by AIAnalysisManager.jsx.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://openrouter.ai; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+    />
     <title>Визуализатор агентного моделирования</title>
   </head>
   <body>
